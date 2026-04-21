@@ -24,7 +24,7 @@ if __name__ == "__main__":
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     con = get_connection()
 
-    # Query 1: Monthly trend
+  
     run_and_save(con, """
         SELECT year_month,
                ROUND(SUM(sales), 0)  AS revenue,
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         ORDER  BY year_month
     """, "01_monthly_trend.csv", "Monthly revenue trend")
 
-    # Query 2: Top 10 products
+    #
     run_and_save(con, """
         SELECT "product_name",
                ROUND(SUM(sales), 0)  AS total_revenue,
@@ -44,9 +44,7 @@ if __name__ == "__main__":
         ORDER BY total_revenue DESC
         LIMIT 10
     """, "02_top10_products.csv", "Top 10 products")
-
-    # Query 3: Category margins
-    run_and_save(con, """
+   run_and_save(con, """
         SELECT "category",
                ROUND(SUM(sales), 0)                        AS revenue,
                ROUND(SUM(profit), 0)                       AS profit,
@@ -56,7 +54,7 @@ if __name__ == "__main__":
         ORDER  BY margin_pct DESC
     """, "03_category_margins.csv", "Category profit margins")
 
-    # FIXED Query 4: Discount impact
+  
     run_and_save(con, """
         WITH discount_buckets AS (
             SELECT *,
@@ -79,7 +77,7 @@ if __name__ == "__main__":
         ORDER BY discount_bucket
     """, "04_discount_impact.csv", "Discount vs Margin")
 
-    # Query 5: Top customers
+   
     run_and_save(con, """
         SELECT "customer_name",
                COUNT(DISTINCT "order_id") AS orders,
@@ -90,7 +88,7 @@ if __name__ == "__main__":
         LIMIT 10
     """, "05_top_customers.csv", "Top 10 customers")
 
-    # Query 6: Shipping
+ 
     run_and_save(con, """
         SELECT "ship_mode",
                ROUND(AVG(shipping_days), 1) AS avg_days,
@@ -100,7 +98,7 @@ if __name__ == "__main__":
         ORDER BY avg_days ASC
     """, "06_shipping_analysis.csv", "Shipping performance")
 
-    # Query 7: YoY growth
+   
     run_and_save(con, """
         SELECT year,
                ROUND(SUM(sales), 0)  AS revenue,
@@ -110,7 +108,7 @@ if __name__ == "__main__":
         ORDER  BY year
     """, "07_yoy_growth.csv", "Year-over-year growth")
 
-    # FIXED Query 8: Loss sub-categories
+   
     run_and_save(con, """
         SELECT "sub-category",
                ROUND(SUM(profit), 0) AS total_profit,
