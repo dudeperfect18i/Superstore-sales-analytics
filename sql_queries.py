@@ -9,7 +9,7 @@ def get_connection():
     df = pd.read_csv(CLEANED_PATH, parse_dates=["order_date", "ship_date"])
     con = sqlite3.connect(":memory:")
     df.to_sql("orders", con, index=False, if_exists="replace")
-    print("✅ [sql] 9994 rows loaded into SQLite database")
+    print(" [sql] 9994 rows loaded into SQLite database")
     return con
 
 def run_and_save(con, query, filename, label):
@@ -18,7 +18,7 @@ def run_and_save(con, query, filename, label):
     print(result.to_string(index=False))
     path = os.path.join(OUTPUT_DIR, filename)
     result.to_csv(path, index=False)
-    print(f"   💾 saved → {path}")
+    print(f"    saved → {path}")
 
 if __name__ == "__main__":
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -122,4 +122,4 @@ if __name__ == "__main__":
     """, "08_loss_subcategories.csv", "Loss-making sub-categories")
 
     con.close()
-    print("\n🎉 [done] Script 03 complete! All 8 CSVs saved to outputs/")
+    print(" All 8 CSVs saved to outputs/")
