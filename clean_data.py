@@ -3,8 +3,8 @@ import numpy as np
 import os
 
 # ── paths ─────────────────────────────────────────────────────────────────────
-RAW_PATH     = "superstore.csv"      # CSV is in root folder directly
-CLEANED_PATH = "cleaned_data.csv"        # cleaned file also saved to root
+RAW_PATH     = "superstore.csv"     
+CLEANED_PATH = "cleaned_data.csv"       
 
 def load_data(path):
     """Load raw CSV. Try UTF-8 first, fall back to latin-1."""
@@ -24,26 +24,25 @@ def inspect(df):
     print(df.duplicated().sum())
 
 def clean(df):
-    # 1. Fix column names — remove spaces, lowercase
+ 
     df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
-    # 2. Drop exact duplicates
     before = len(df)
     df = df.drop_duplicates()
     print(f"[clean] Removed {before - len(df)} duplicate rows")
 
-    # 3. Convert date columns from string → datetime
+
     df["order_date"] = pd.to_datetime(df["order_date"], dayfirst=False)
     df["ship_date"]  = pd.to_datetime(df["ship_date"],  dayfirst=False)
 
-    # 4. Fill or drop nulls
+  
     if "postal_code" in df.columns:
         df["postal_code"] = df["postal_code"].fillna(0).astype(int)
 
     df = df.dropna(subset=["sales", "profit"])
     print(f"[clean] {len(df)} rows after null removal")
 
-    # 5. Calculated columns
+
     df["profit_margin_pct"] = (df["profit"] / df["sales"] * 100).round(2)
     df["shipping_days"]     = (df["ship_date"] - df["order_date"]).dt.days
     df["year"]              = df["order_date"].dt.year
@@ -51,7 +50,7 @@ def clean(df):
     df["year_month"]        = df["order_date"].dt.to_period("M").astype(str)
     df["is_loss"]           = df["profit"] < 0
 
-    # 6. Standardise string columns
+   
     str_cols = ["segment", "category", "sub-category", "region", "ship_mode"]
     for col in str_cols:
         if col in df.columns:
