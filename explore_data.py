@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-CLEANED_PATH = "cleaned_data.csv"  # Root folder (matches your Script 01 output)
-
+CLEANED_PATH = "cleaned_data.csv"  
 def load():
     return pd.read_csv(CLEANED_PATH, parse_dates=["order_date", "ship_date"])
 
@@ -30,7 +29,7 @@ def category_analysis(df):
         avg_margin= ("profit_margin_pct", "mean")
     ).round(2).sort_values("revenue", ascending=False)
     print(cat.to_string())
-    print("\n📊 KEY INSIGHT: Technology = high margin, Furniture = low/negative")
+    print("\n KEY INSIGHT: Technology = high margin, Furniture = low/negative")
 
 def discount_damage(df):
     print("\n═" * 50)
@@ -46,7 +45,7 @@ def discount_damage(df):
         orders     = ("sales", "count")
     ).round(2)
     print(result.to_string())
-    print("\n⚠️  YOUR HEADLINE: Higher discount = lower/negative margin")
+    print("\n  YOUR HEADLINE: Higher discount = lower/negative margin")
 
 def top_and_bottom(df):
     print("\n═" * 50)
@@ -59,7 +58,7 @@ def top_and_bottom(df):
     print("BOTTOM 5 (LOSS-MAKING) SUB-CATEGORIES")
     print("═" * 50)
     print(sub.tail(5).to_string())
-    print("\n📊 Tables usually shows big losses — ACTIONABLE finding!")
+    print("\n Tables usually shows big losses — ACTIONABLE finding!")
 
 def regional_view(df):
     print("\n═" * 50)
@@ -74,14 +73,14 @@ def regional_view(df):
 def save_insights(df):
     os.makedirs("outputs", exist_ok=True)
     lines = [
-        "🔍 KEY INSIGHTS — RETAIL SALES ANALYSIS",
+        " KEY INSIGHTS — RETAIL SALES ANALYSIS",
         "=" * 50,
         f"Total revenue: ₹{df['sales'].sum():,.0f}",
         f"Total profit: ₹{df['profit'].sum():,.0f}",
         f"Overall margin: {df['profit'].sum()/df['sales'].sum()*100:.1f}%",
         f"Loss orders: {df['is_loss'].sum()} ({df['is_loss'].mean()*100:.1f}%)",
         "",
-        "📝 YOUR FINDINGS (fill after running):",
+        " YOUR FINDINGS (fill after running):",
         "1. [Discount vs Margin correlation]",
         "2. [Worst performing category/sub-category]", 
         "3. [Best region for profit]",
@@ -90,7 +89,7 @@ def save_insights(df):
     ]
     with open("outputs/insights_summary.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
-    print("\n✅ [save] Insights → outputs/insights_summary.txt")
+    print("\n [save] Insights → outputs/insights_summary.txt")
 
 if __name__ == "__main__":
     df = load()
@@ -100,4 +99,4 @@ if __name__ == "__main__":
     top_and_bottom(df)
     regional_view(df)
     save_insights(df)
-    print("\n🎉 [done] Script 02 complete!")
+   
